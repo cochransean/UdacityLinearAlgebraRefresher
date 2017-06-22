@@ -47,6 +47,14 @@ class Vector:
     def __getitem__(self, key):
         return self.coordinates[key]
 
+    def __setitem__(self, i, value):
+        new_coordinates = list(self.coordinates)
+        new_coordinates[i] = value
+        self.coordinates = new_coordinates
+
+    def __len__(self):
+        return self.dimension
+
     def scalar_mult(self, scalar):
         return Vector(tuple(x * scalar for x in self.coordinates))
 
@@ -84,11 +92,11 @@ class Vector:
             if str(e) == Vector.CANNOT_NORMALIZE_ZERO_VECTOR_MSG:
                 raise Exception('Cannot compute an angle with the zero vector.')
 
-    def is_parallel_to(self, other):
+    def is_parallel_to(self, other, tolerance=1e-10):
         return (self.is_zero() or
                 other.is_zero() or
-                self.angle_with(other) == 0 or
-                self.angle_with(other) == pi)
+                self.angle_with(other) <= tolerance or
+                abs(self.angle_with(other)) - pi <= tolerance)
 
     def is_zero(self, tolerance=1e-10):
         return self.magnitude() < tolerance
@@ -117,8 +125,6 @@ class Vector:
 
     def cross_product(self, other):
         try:
-            print(self.coordinates)
-            print(other.coordinates)
             x1, y1, z1 = self.coordinates
             x2, y2, z2 = other.coordinates
             new_coordinates = [
