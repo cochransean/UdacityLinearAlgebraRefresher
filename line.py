@@ -95,7 +95,6 @@ class Line(object):
 
         if not self.is_parallel_to(other):
             return False
-
         x0 = self.basepoint
         y0 = other.basepoint
         basepoint_difference = x0 - y0

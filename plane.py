@@ -99,6 +99,12 @@ class Plane(object):
 
         x0 = self.basepoint
         y0 = other.basepoint
+
+        if x0 is None and y0 is None:
+            return self.constant_term == other.constant_term
+        elif x0 is None or y0 is None:
+            return False
+
         basepoint_difference = x0 - y0
         n = self.normal_vector
 
